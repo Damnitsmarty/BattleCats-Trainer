@@ -50,7 +50,8 @@ public class RandomTips : MonoBehaviour
         if (tips.Length < 1 || puns.Length < 1) return;
         //
         string res = "";
-        if (currentTip % 2 == 0) res = "<size=9>" + puns[Random.Range(0, puns.Length - 1)] + "</size>";
+
+        if (Random.Range(0f, 1f) > 0.5f) res = "<size=9>" + puns[Random.Range(0, puns.Length - 1)] + "</size>";
         else res = "<size=10>Tip:</size>\n\n" + tips[Random.Range(0, tips.Length - 1)];
 
         GetComponent<UnityEngine.UI.Text>().text = res;
