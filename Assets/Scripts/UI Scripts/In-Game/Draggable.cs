@@ -2,13 +2,22 @@
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
+
 [RequireComponent(typeof(Image))]
 public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
     public bool dragOnSurfaces = true;
+    public GameObject dragObject;
+
+
 
     private GameObject m_DraggingIcon;
     private RectTransform m_DraggingPlane;
+    private float cameraFOV = 0.4f;
+
+
+    public UnityEngine.Events.UnityEvent OnDrop;
+
 
     public void OnBeginDrag(PointerEventData eventData)
     {
@@ -18,15 +27,15 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
 
         // We have clicked something that can be dragged.
         // What we want to do is create an icon for this.
-        m_DraggingIcon = new GameObject("icon");
+        m_DraggingIcon = Instantiate(dragObject.gameObject, canvas.transform);
+
+        //m_DraggingIcon = new GameObject("icon");
 
         m_DraggingIcon.transform.SetParent(canvas.transform, false);
         m_DraggingIcon.transform.SetAsLastSibling();
 
-        var image = m_DraggingIcon.AddComponent<Image>();
 
-        image.sprite = GetComponent<Image>().sprite;
-        image.SetNativeSize();
+        //image.SetNativeSize();
 
         if (dragOnSurfaces)
             m_DraggingPlane = transform as RectTransform;
@@ -40,6 +49,8 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
     {
         if (m_DraggingIcon != null)
             SetDraggedPosition(data);
+
+        cameraFOV = 0.9f;
     }
 
     private void SetDraggedPosition(PointerEventData data)
@@ -60,6 +71,8 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
     {
         if (m_DraggingIcon != null)
             Destroy(m_DraggingIcon);
+
+        OnDrop.Invoke();
     }
 
     static public T FindInParents<T>(GameObject go) where T : Component
