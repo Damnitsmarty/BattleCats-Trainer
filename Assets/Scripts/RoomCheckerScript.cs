@@ -5,44 +5,96 @@ public class RoomCheckerScript : MonoBehaviour {
 
 
 
-	public CattributesScript cattributes;
-    public MobileInputScript InputScript;
+	public  CattributesScript cattributes;
+     public MobileInputScript InputScript;
 
-    public Vector3 CatLockPosition;
+    
    
     bool CatPickedUp;
+	public GameObject CatLock;
+	bool CatInPlace;
 
 	// Use this for initialization
 	void Start () {
-	
+
+		cattributes = this.gameObject.GetComponent ("CattributesScript") as CattributesScript;
+		InputScript = this.gameObject.GetComponent ("MobileInputScript") as MobileInputScript;
+
 	}
 	
 	// Update is called once per frame
 	void Update () {
         CatPickedUp = InputScript.CatPickedUp;
+
+//		if (this.gameObject.transform.position != CatLock.transform.position) 
+//		{
+//			CatInPlace = false;
+//		}
+//
+
+//		if (CatLock != null && InputScript.CatPickedUp == false && CatInPlace == false) 
+//		{
+//			
+//			LockCat ();
+//
+//
+//		}
+
+
+
+
+
+	}
+
+
+//	void OnTriggerStay (Collider other)
+//	{
+//		if (other.gameObject.tag == "CatLock" ) 
+//		{
+//			CatLock = other.gameObject;
+//			if (InputScript.CatPickedUp == false) 
+//			{
+//				this.gameObject.transform.position = CatLock.transform.position;
+//			}
+//		}
+//
+//
+//
+//	}
+
+
+	void LockCat()
+	{
+		this.gameObject.transform.position = CatLock.transform.position;
+		CatInPlace = true;
 	}
 
 
     void OnTriggerEnter(Collider other)
     {
-        if (InputScript.CatPickedUp == false)
-        {
+		Debug.Log ("Entered Room");
+		CatLock = other.gameObject.transform.Find ("CatLock").gameObject;
+		LockCat ();
+	
+
             if (other.gameObject.tag == "GymLevel1")
             {
-                CatLockPosition = other.gameObject.transform.FindChild("CatLock").position;
+                
                 cattributes.GymLevel1();
                 Debug.Log("Cat placed in Gym");
                 
 
-            }
+		}
 
 
             if (other.gameObject.tag == "GymLevel2")
             {
-                CatLockPosition = other.gameObject.transform.FindChild("CatLock").position;
-                cattributes.GymLevel2();
+			
+
+			Debug.Log ("Gym");
+			cattributes.GymLevel2 ();
                 Debug.Log("Cat placed in Gym");
-                Debug.Log(CatLockPosition);
+                
 
 
             }
@@ -124,12 +176,14 @@ public class RoomCheckerScript : MonoBehaviour {
                 Debug.Log("Cat placed in Kitchen");
             }
 
-        }
+        
     }
 
 	void OnTriggerExit (Collider other)
 	{
 		cattributes.InActive ();
 		Debug.Log ("The Cat is Inactive");
+		CatLock = null;
+		CatInPlace = false;
 }
 }

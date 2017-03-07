@@ -33,9 +33,6 @@ public class LoadingSceneManager : MonoBehaviour {
         yield return SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
 
         if (Time.time < endTime) yield return new WaitForSeconds(endTime - Time.time);
-
-        //stop(fade out) background music
-        GameObject.Find("[Mgr]Background Music Manager").GetComponent<VolumeControl>().state = VolumeControl.AudioState.FadingOut;
         
         // !!! unload loading screen
         SceneManager.UnloadScene("LoadingScreen");

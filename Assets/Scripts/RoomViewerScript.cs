@@ -5,6 +5,9 @@ public class RoomViewerScript : MonoBehaviour
 {
 
 
+
+	public CameraScript CameraInfo;
+
 	public GameObject RoomCamera;      //The Camera in Each room
 	public GameObject MainCamera;      // The Main Camera of the scene
 	public GameObject RoomStats;
@@ -22,9 +25,10 @@ public class RoomViewerScript : MonoBehaviour
 	// Use this for initialization
 	void Start ()
 	{
+		
 		GameUI = GameObject.Find ("UI");
 		MainCamera = GameObject.Find ("Main Camera");
-
+		CameraInfo = MainCamera.gameObject.GetComponent ("CameraScript") as CameraScript;
 	}
 
 	public void CameraSelected ()       // Activates the Camera in the room
@@ -51,7 +55,7 @@ public class RoomViewerScript : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
 	{
-
+		
 		CountDown -= Time.deltaTime;            // Counts down the time
 
 		if (CountDown < 0)                      // If the time is up 
@@ -75,10 +79,12 @@ public class RoomViewerScript : MonoBehaviour
 					}
 					if (NumberOfTaps == 2) {                                                            // If the sprite is tapped 2 times
 							NumberOfTaps = 0;                                                           //The taps is reset
+							if (CameraInfo.CameraMoving == false)
+							{
 							CameraSelected ();                                                          // The rooms camera is selected
 
 							CountDown = 1.5f;                                                           //The countdown is reset
-
+							}
 					}
 				}
 			
@@ -88,6 +94,7 @@ public class RoomViewerScript : MonoBehaviour
 	}
 	}
 	}
+
 
 
 

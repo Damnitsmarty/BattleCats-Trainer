@@ -12,6 +12,13 @@ public class CameraScript : MonoBehaviour {
 	public float dragMultiplier = 0.1f;                           // The speed the player can move the camera at
     public float zoomMultiplier = 0.1f;
 
+	public Vector2 FirstTouch;
+	public Vector2 LastTouch;
+
+
+	public bool CameraMoving;
+
+	public float DragDistance;
 
 	public float CameraLocked = 0;                          // If the camera is Locked it cannot move, Movement speed is set to 0
 	public float CameraUnlocked = 1f;                       // If the camera is unlocked it can now move
@@ -24,33 +31,17 @@ public class CameraScript : MonoBehaviour {
 	}
 	// Use this for initialization
 	void Start () {
+		DragDistance = Screen.height * 20 / 100;
 	}
 
 	// Update is called once per frame
 	void Update () {
-       
+		Touch touch = Input.GetTouch (0);
 
 
-			// -1, if the user is not actually pinching
-			float currentPinchDistance = getPinchDistance();
 
-			// When the user starts pinching, the lastPinchDistance
-			// is updated from -1 to the current distance
-
-			// Hence if the value is bigger than -1
-			// we can get an accurate delta of the distances
-//			if (Input.touchCount > 1 && lastPinchDistance > -1)
-//			{
-//				Camera camera = GetComponent<Camera>();
-//				float delta = lastPinchDistance - currentPinchDistance;
-//				camera.fieldOfView = Mathf.Clamp(camera.fieldOfView + delta * zoomMultiplier, FOVZoomIn, FOVZoomOut);
-
-
-				//Clamp, so it doesn't exceed the limits of the zoom
-				//pos.z = Mathf.Clamp(pos.z, -MinZoom, MaxZoom);
-				//Update the transform of the camera
 			
-			if(Input.touchCount == 1)                       // If the player touches the screen with 2 fingers
+			if(Input.touchCount == 0)                       // If the player touches the screen with 2 fingers
 			{
                 //Cast a ray, to see if it hits any draggable objects;
                 Ray ray = Camera.main.ScreenPointToRay(Input.GetTouch(0).position);            // A ray cast is sent from the point on the screen they touched
@@ -66,6 +57,34 @@ public class CameraScript : MonoBehaviour {
 					Debug.Log ("Cat Picked Up");
 
 				}
+
+
+			if (touch.phase== TouchPhase.Began) 
+			{
+				FirstTouch = touch.position;
+				LastTouch = touch.position;
+			}
+
+			if (touch.phase == TouchPhase.Moved) 
+			{
+				LastTouch = touch.position;
+			}
+
+			if (touch.phase == TouchPhase.Ended) 
+			{
+				LastTouch = touch.position;
+			}
+
+
+			if (Mathf.Abs (LastTouch.x - FirstTouch.x) > DragDistance || Mathf.Abs (LastTouch.y - FirstTouch.y) > DragDistance) 
+			{
+				CameraMoving = true;
+			} 
+			else
+			{
+				CameraMoving = false;
+			}
+
 			if (MobileInput.CatPickedUp == false)                          // When they drop the cat they can move again
 			{
 				dragMultiplier = 0.01f/2;
@@ -80,18 +99,13 @@ public class CameraScript : MonoBehaviour {
             {
                 transform.position += new Vector3(0, -dPos.y, 0);                  // Updates the Camaras position, The Camera can only move up and down 
             }
-			}
-			// Always update the last pinch distance (even when -1)
-			lastPinchDistance = currentPinchDistance;
-		}
-	float getPinchDistance()
-	{
-		if (Input.touchCount < 2) return -1;
-		Touch touch0 = Input.GetTouch(0);
-		Touch touch1 = Input.GetTouch(1);
 
-		return Vector2.Distance(touch0.position, touch1.position);
-	}
+		
+
+			}
+			
+		}
+
 }
 
 

@@ -29,6 +29,7 @@ TagManager:
   - ConstructionOptions
   - UnderConstruction
   - CatLock
+  - Cat
   layers:
   - Default
   - TransparentFX

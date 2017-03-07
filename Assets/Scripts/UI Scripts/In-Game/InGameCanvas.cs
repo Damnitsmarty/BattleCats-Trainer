@@ -35,7 +35,7 @@ public class InGameCanvas : MonoBehaviour {
 	public void SetConstructionBar(bool value)
 	{
 		ConstructionBar = value;
-		anim.SetBool("ConstructionBar", ConstructionBar);
+		anim.SetBool("ConstructionBar", slideBar);
 		UpdateBackPanel();
 	}
 		
@@ -65,7 +65,7 @@ public class InGameCanvas : MonoBehaviour {
 
 	public void UpdateBackPanel()
     {
-        backPanel = slideBar || storePage || ConstructionBar;
+        backPanel = slideBar || storePage;
         anim.SetBool("BackPanel", backPanel);
 
     }

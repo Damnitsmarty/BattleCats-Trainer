@@ -14,6 +14,11 @@ public class PlayerStatsScript : MonoBehaviour
     public Text BattleCatCoinsText;
     public Text CatNipText;
 
+
+
+
+
+
     // Use this for initialization
     void Start()
     {

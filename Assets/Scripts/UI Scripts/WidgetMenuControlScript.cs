@@ -24,6 +24,7 @@ public class WidgetMenuControlScript : MonoBehaviour {
 	public Animator StrayStats;
 	public Animator HouseStats;
 
+
 	// Use this for initialization
 	void Start () {
 	
@@ -128,9 +129,7 @@ public class WidgetMenuControlScript : MonoBehaviour {
 		OpenButton.SetActive (true);
 		CloseButton.SetActive (false);
 	}
-
-
-
+		
 
 
 

@@ -9,6 +9,8 @@ public class BattleEventCountDownScript : MonoBehaviour {
 	public int EventCountDown;
 	public bool EventActive;
 
+
+
 	public Text CountDown;
 
 
@@ -35,11 +37,11 @@ public class BattleEventCountDownScript : MonoBehaviour {
 	}
 
 
-
+	Debug.Logger("Yas");
 
 	void SetCountDownClock()
 	{
-		CountDown.text = "Event In: " + EventCountDown;
+		CountDown.text = "Event In: " + EventCountDown +""+ " Minutes";
 
 	}
 
@@ -47,7 +49,7 @@ public class BattleEventCountDownScript : MonoBehaviour {
 	{
 		CurrentTime = (int)System.DateTime.Now.Minute;
 
-		CountDown.text = "Event In: " + EventCountDown;
+		CountDown.text = "Event In: " + EventCountDown + "Minutes";
 
 	}
 }

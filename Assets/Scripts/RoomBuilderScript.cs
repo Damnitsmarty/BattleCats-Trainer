@@ -1,11 +1,18 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
+
 
 public class RoomBuilderScript : MonoBehaviour {
 
+
+	RoomBuilderScript BuildScript;
+	CameraScript CameraInfo;
+
+	public GameObject MainCamera;
 	public GameObject GymRoom;                        // The Gym Prefab
 	public GameObject ArcadeRoom;                     // The Arcade Room
-	public GameObject Kitchen;                        // Kitchen
+	public GameObject KitchenRoom;                        // Kitchen
 	public GameObject TreadmillRoom;                  // TreadMill Room ( Currently Not In)
 	public GameObject ConstructionRoom;               // The Empty Constructionroom
 	public GameObject ConstructionBar;                // The Construction UI
@@ -15,12 +22,19 @@ public class RoomBuilderScript : MonoBehaviour {
 	public GameObject Parent;                         // The Parent Object ( Used to change the Rooms Name and Tag After building)
 	public BoxCollider2D BuggyCollider;               // A Collider that causes issues if left active
 
+	public GameObject GymHolder;
+
+	public Button GymButton;
+	public Button ArcadeButtons;
+	public Button KitchenButton;
+
 
 	public bool BuildingGym;                          // Checks if a Gym is being Built
 	public bool BuildingArcade;                       // Checks if a Arcade is being Built
 	public bool BuildingKitchen;                      // Checks if a Kithcen is being Built
 
 	public bool CatNip;
+
 
 
 	public int CurrentTime;                            // The Systems current Time
@@ -36,6 +50,25 @@ public class RoomBuilderScript : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+
+		MainCamera = GameObject.Find ("MainCamera");
+
+		GymRoom = this.gameObject.transform.FindChild ("GymRoomPrefab").gameObject;
+		ArcadeRoom = this.gameObject.transform.FindChild ("ArcadePrefab").gameObject;
+		KitchenRoom = this.gameObject.transform.FindChild ("KitchenPrefab").gameObject;
+		ConstructionRoom = this.gameObject.transform.FindChild ("ConstructionRoomPrefab").gameObject;
+		ConstructionBar = this.gameObject.transform.FindChild ("ConstructionBar").gameObject;
+		CameraInfo = MainCamera.gameObject.GetComponent ("CameraScript") as CameraScript;
+	
+	
+
+	
+	
+
+
+
+
+
 		//BuildSpritePosition = BuildSprite.transform.position;
 		spriteRender = GetComponent<SpriteRenderer>();
 		PlayerInfo = GameObject.Find("PlayerStats Manager").GetComponent<PlayerStatsScript>();
@@ -57,7 +90,7 @@ public class RoomBuilderScript : MonoBehaviour {
 
 
 
-		if (Input.touchCount == 1)                                    // If the player touches the screen with one hand 
+		if (Input.touchCount == 1 && CameraInfo.CameraMoving != true)                                    // If the player touches the screen with one hand 
 		{
 
 			Vector3 ScreenPosition = Camera.main.ScreenToWorldPoint (Input.GetTouch (0).position);
@@ -135,6 +168,7 @@ public class RoomBuilderScript : MonoBehaviour {
 
 	public void BuildGym ()                       // Starts the construction of the Gym
 	{
+		Debug.Log ("Bitch");
 		gameObject.GetComponentInChildren<SpriteRenderer> (Sprite).sprite = ConstructionSprite;              // Changes the sprite on the room
 		BuildFinishTime = CurrentTime + 2;                                                                   // Sets the finsih time for the build
 		BuildingGym = true;                                
@@ -176,7 +210,7 @@ public class RoomBuilderScript : MonoBehaviour {
 		Parent.tag = "KitchenLevel1";                  // Changes the Rooms Tag
 		Parent.name = "Kitchen";                       // Changes the rooms name
 		BuggyCollider.enabled = false;                 // Disables the Buggy Collider
-		Kitchen.SetActive (true);                      //Activates the Kitchen Room
+		KitchenRoom.SetActive (true);                      //Activates the Kitchen Room
 		ConstructionRoom.SetActive (false);            //Hides the Empty Construction Room
 		HideConstructionBar ();                        // Hides the construction UI
 	}
